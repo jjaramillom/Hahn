@@ -1,6 +1,6 @@
 module.exports = {
     apiURL: 'https://jsonplaceholder.typicode.com',
-    mongoURI: 'mongodb://localhost:27017'
+    mongoURI: 'mongodb://localhost:27017/hahnDB'
 };
 
 /* 

@@ -1,13 +1,20 @@
 import React from 'react';
 
 import Card from 'react-bootstrap/Card';
+import Button from 'react-bootstrap/Button';
 
-import classes from './Post.module.css';
+import classes from './DeletablePost.module.css';
 
-const Post = (props) => (
+const DeletablePost = (props) => (
 	<Card className={classes.card}>
 		<Card.Header as='h5'>
 			<b>{props.title} &nbsp;</b>
+			<Button
+				variant='danger'
+				onClick={() => props.onDelete(props.postId)}
+				className={classes.farRight}>
+				delete
+			</Button>
 		</Card.Header>
 		<Card.Body>
 			<Card.Subtitle className='mb-2 text-muted'></Card.Subtitle>
@@ -30,4 +37,4 @@ const randomDate = () => {
 	).toGMTString();
 };
 
-export default Post;
+export default DeletablePost;

@@ -1,29 +1,31 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import Container from 'react-bootstrap/Container';
 
 import Post from './Post/Post';
+import DeletablePost from './DeletablePost/DeletablePost';
+
+import classes from './PostList.module.css';
 
 const PostList = (props) => {
-	const [posts, setPosts] = useState();
-
-	useEffect(() => {
-		const fetchPosts = async () => {
-			const data = (await axios.get('http://localhost:3000/post')).data;
-			if (data) setPosts(data);
-		};
-
-		fetchPosts();
-	}, []);
-
 	let postsArray = [];
+	const PostComponent = props.deletable ? DeletablePost : Post;
 
-	if (posts) {
-		postsArray = posts.map((post) => (
-			<Post key={post.id} title={post.title} body={post.body} userId= {post.userId} />
-		));
+	if (props.posts.length > 0) {
+		postsArray = props.posts.map((post) => {
+			return (
+				<PostComponent
+					onDelete={(post) => props.onDeletePost(post)}
+					key={post.id}
+					postId={post.id}
+					title={post.title}
+					body={post.body}
+					user={post.userId}
+				/>
+			);
+		});
 	}
 
-	return postsArray ? postsArray : <p>Loading</p>;
+	return <Container className={classes.container}>{postsArray}</Container>;
 };
 
 export default PostList;

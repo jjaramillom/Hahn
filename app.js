@@ -7,14 +7,15 @@ const cors = require('cors');
 
 const keys = require('./config/keys');
 
-var indexRouter = require('./routes/index');
+var postRouter = require('./routes/post');
 
-mongoose.connect(keys.mongoURI, (err) => {
-	if (err) {
-		return console.log('Error connecting with mongo');
-	}
-	console.log('Connected to mongo');
-});
+mongoose.Promise = global.Promise;
+mongoose.connect(keys.mongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
+
+const db = mongoose.connection;
+
+db.on('error', (error) => console.warn('Error connecting to Mongo', error));
+db.once('open', () => console.log('Connected to Mongo'));
 
 var app = express();
 app.use(cors());
@@ -25,6 +26,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
+app.use('/', postRouter);
 
 module.exports = app;
